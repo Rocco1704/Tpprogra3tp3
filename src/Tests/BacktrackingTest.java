@@ -56,6 +56,9 @@ public class BacktrackingTest {
 
     @Test
     public void testRespetaIncompatibilidades() {
+        // Agregamos un segundo arquitecto como alternativa
+        gestor.agregarPersona(new Persona("Roberto", Rol.ARQUITECTO, 3));
+        
         // Ana y Carlos son incompatibles
         Persona ana = gestor.getPersonas().get(0);
         Persona carlos = gestor.getPersonas().get(1);
@@ -64,6 +67,7 @@ public class BacktrackingTest {
         Backtracking bt = new Backtracking(gestor, requerimiento);
         Equipo resultado = bt.resolver();
 
+        assertNotNull(resultado, "Debe encontrar equipo con la alternativa");
         assertFalse(resultado.tieneIncompatibilidades(), 
                     "El equipo no debe tener incompatibilidades");
     }
