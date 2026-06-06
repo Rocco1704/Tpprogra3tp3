@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestorDePersonas {
-
     private List<Persona> personas;
 
     public GestorDePersonas() {

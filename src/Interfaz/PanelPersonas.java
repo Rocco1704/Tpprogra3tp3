@@ -14,6 +14,7 @@ public class PanelPersonas extends JPanel {
     private JSpinner spinnerCalificacion;
     private JTable tablaPersonas;
     private DefaultTableModel modeloTabla;
+    private JButton botonEliminar; // JButton, no JTextField
 
     public PanelPersonas(GestorDePersonas gestor) {
         this.gestor = gestor;
@@ -22,14 +23,15 @@ public class PanelPersonas extends JPanel {
     }
 
     private void inicializarComponentes() {
-        // --- Panel de carga arriba ---
-        JPanel panelCarga = new JPanel(new GridLayout(4, 2, 5, 5));
+        // GridLayout de 5 filas porque ahora hay un botón más
+        JPanel panelCarga = new JPanel(new GridLayout(5, 2, 5, 5));
         panelCarga.setBorder(BorderFactory.createTitledBorder("Nueva Persona"));
 
         campoNombre = new JTextField();
         comboRol = new JComboBox<>(Rol.values());
         spinnerCalificacion = new JSpinner(new SpinnerNumberModel(3, 1, 5, 1));
         JButton botonAgregar = new JButton("Agregar Persona");
+        botonEliminar = new JButton("Eliminar Persona"); // inicializar acá
 
         panelCarga.add(new JLabel("Nombre:"));
         panelCarga.add(campoNombre);
@@ -39,6 +41,8 @@ public class PanelPersonas extends JPanel {
         panelCarga.add(spinnerCalificacion);
         panelCarga.add(new JLabel(""));
         panelCarga.add(botonAgregar);
+        panelCarga.add(new JLabel(""));
+        panelCarga.add(botonEliminar);
 
         // --- Tabla abajo ---
         String[] columnas = {"Nombre", "Rol", "Calificación"};
@@ -47,8 +51,9 @@ public class PanelPersonas extends JPanel {
         JScrollPane scroll = new JScrollPane(tablaPersonas);
         scroll.setBorder(BorderFactory.createTitledBorder("Personas cargadas"));
 
-        // --- Acción del botón ---
+        // --- Acciones ---
         botonAgregar.addActionListener(e -> agregarPersona());
+        botonEliminar.addActionListener(e -> eliminarPersona());
 
         add(panelCarga, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
@@ -60,15 +65,23 @@ public class PanelPersonas extends JPanel {
             JOptionPane.showMessageDialog(this, "Ingresá un nombre.");
             return;
         }
-
         Rol rol = (Rol) comboRol.getSelectedItem();
         int calificacion = (int) spinnerCalificacion.getValue();
-
         Persona nueva = new Persona(nombre, rol, calificacion);
         gestor.agregarPersona(nueva);
-
         modeloTabla.addRow(new Object[]{nombre, rol, calificacion});
         campoNombre.setText("");
+    }
+
+    private void eliminarPersona() {
+        int filaSeleccionada = tablaPersonas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccioná una persona para eliminar.");
+            return;
+        }
+        Persona persona = gestor.getPersonas().get(filaSeleccionada);
+        gestor.eliminarPersona(persona);
+        modeloTabla.removeRow(filaSeleccionada);
     }
 
     public void actualizarTabla() {

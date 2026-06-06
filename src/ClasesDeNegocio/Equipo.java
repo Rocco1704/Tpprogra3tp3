@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Equipo {
-
     private List<Persona> integrantes;
 
     public Equipo() {
