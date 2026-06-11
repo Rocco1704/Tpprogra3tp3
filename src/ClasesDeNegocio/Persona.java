@@ -9,6 +9,8 @@ public class Persona {
     private Rol rol;
     private int calificacion;
     private Set<Persona> incompatibles;
+    
+    private String rutaFoto; //  foto
 
     public Persona(String nombre, Rol rol, int calificacion) {
         this.nombre = nombre;
@@ -35,4 +37,7 @@ public class Persona {
     public String toString() {
         return nombre + " (" + rol + ") - Calif: " + calificacion;
     }
+    
+    public String getRutaFoto() { return rutaFoto; }
+    public void setRutaFoto(String ruta) { this.rutaFoto = ruta; }
 }

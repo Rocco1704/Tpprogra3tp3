@@ -15,6 +15,8 @@ public class PanelResultado extends JPanel {
     private DefaultTableModel modeloTabla;
     private JLabel labelEstado;
 
+    
+   
     public PanelResultado(GestorDePersonas gestor, PanelRequerimientos panelRequerimientos) {
         this.gestor = gestor;
         this.panelRequerimientos = panelRequerimientos;
@@ -48,6 +50,8 @@ public class PanelResultado extends JPanel {
         add(panelBoton, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
         add(panelInfo, BorderLayout.SOUTH);
+        
+        
     }
 
     private void resolver() {
@@ -84,6 +88,7 @@ public class PanelResultado extends JPanel {
                             });
                         }
                         labelCalificacion.setText("Calificación total: " + resultado.getCalificacionTotal());
+                   
                     }
                 } catch (Exception ex) {
                     labelEstado.setText("Error al resolver.");
@@ -94,4 +99,6 @@ public class PanelResultado extends JPanel {
 
         worker.execute();
     }
+    
+    
 }

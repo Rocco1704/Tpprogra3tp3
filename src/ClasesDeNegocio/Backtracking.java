@@ -26,7 +26,6 @@ public class Backtracking {
     private void backtrack(List<Persona> personas, Equipo equipoActual, int indice) {
         cantidadLlamadas++;
 
-        // Caso base: llegamos al final de la lista
         if (indice == personas.size()) {
             if (esEquipoCompleto(equipoActual)) {
                 if (mejorEquipo == null || 
@@ -39,14 +38,12 @@ public class Backtracking {
 
         Persona candidata = personas.get(indice);
 
-        // Rama 1: agrego a la persona si es válido
         if (puedeAgregar(candidata, equipoActual)) {
             equipoActual.agregarPersona(candidata);
             backtrack(personas, equipoActual, indice + 1);
-            equipoActual.quitarPersona(candidata); // backtrack
+            equipoActual.quitarPersona(candidata); 
         }
 
-        // Rama 2: no agrego a la persona
         backtrack(personas, equipoActual, indice + 1);
     }
 
