@@ -12,11 +12,12 @@ public class PanelResultado extends JPanel {
 
     private JButton botonResolver;
     private JLabel labelCalificacion;
+    private JLabel labelTiempo;
+    private JLabel labelLlamadas;
+    private JLabel labelCasoBase;
     private DefaultTableModel modeloTabla;
     private JLabel labelEstado;
 
-    
-   
     public PanelResultado(GestorDePersonas gestor, PanelRequerimientos panelRequerimientos) {
         this.gestor = gestor;
         this.panelRequerimientos = panelRequerimientos;
@@ -39,10 +40,17 @@ public class PanelResultado extends JPanel {
         JScrollPane scroll = new JScrollPane(tabla);
         scroll.setBorder(BorderFactory.createTitledBorder("Equipo resultante"));
 
-        // --- Calificación total abajo ---
-        JPanel panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        // --- Info abajo ---
+        JPanel panelInfo = new JPanel(new GridLayout(4, 1, 2, 2));
         labelCalificacion = new JLabel("Calificación total: -");
+        labelTiempo = new JLabel("Tiempo: -");
+        labelLlamadas = new JLabel("Llamadas recursivas: -");
+        labelCasoBase = new JLabel("Casos base evaluados: -");
+
         panelInfo.add(labelCalificacion);
+        panelInfo.add(labelTiempo);
+        panelInfo.add(labelLlamadas);
+        panelInfo.add(labelCasoBase);
 
         // --- Acción del botón ---
         botonResolver.addActionListener(e -> resolver());
@@ -50,8 +58,6 @@ public class PanelResultado extends JPanel {
         add(panelBoton, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
         add(panelInfo, BorderLayout.SOUTH);
-        
-        
     }
 
     private void resolver() {
@@ -66,12 +72,13 @@ public class PanelResultado extends JPanel {
 
         Requerimiento requerimiento = panelRequerimientos.getRequerimiento();
 
-        // SwingWorker para correr en thread separado
+        final Backtracking[] btRef = new Backtracking[1];
+
         SwingWorker<Equipo, Void> worker = new SwingWorker<>() {
             @Override
             protected Equipo doInBackground() {
-                Backtracking bt = new Backtracking(gestor, requerimiento);
-                return bt.resolver();
+                btRef[0] = new Backtracking(gestor, requerimiento);
+                return btRef[0].resolver();
             }
 
             @Override
@@ -88,8 +95,13 @@ public class PanelResultado extends JPanel {
                             });
                         }
                         labelCalificacion.setText("Calificación total: " + resultado.getCalificacionTotal());
-                   
                     }
+
+                    // Estadísticas siempre se muestran
+                    labelTiempo.setText("Tiempo: " + btRef[0].getTiempoTotal() + " ms");
+                    labelLlamadas.setText("Llamadas recursivas: " + btRef[0].getCantidadLlamadas());
+                    labelCasoBase.setText("Casos base evaluados: " + btRef[0].getCantidadCasoBase());
+
                 } catch (Exception ex) {
                     labelEstado.setText("Error al resolver.");
                 }
@@ -99,6 +111,4 @@ public class PanelResultado extends JPanel {
 
         worker.execute();
     }
-    
-    
 }

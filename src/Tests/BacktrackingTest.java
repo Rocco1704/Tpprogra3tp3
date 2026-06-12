@@ -93,4 +93,16 @@ public class BacktrackingTest {
         assertTrue(bt.getCantidadLlamadas() > 0, 
                    "Debe registrar la cantidad de llamadas recursivas");
     }
+    @Test
+    public void testEstadisticas() {
+        Backtracking bt = new Backtracking(gestor, requerimiento);
+        bt.resolver();
+
+        assertTrue(bt.getCantidadCasoBase() > 0, 
+                   "Debe registrar casos base");
+        assertTrue(bt.getTiempoTotal() >= 0, 
+                   "El tiempo no puede ser negativo");
+        assertTrue(bt.getCantidadLlamadas() >= bt.getCantidadCasoBase(), 
+                   "Las llamadas deben ser mayor o igual a los casos base");
+    }
 }

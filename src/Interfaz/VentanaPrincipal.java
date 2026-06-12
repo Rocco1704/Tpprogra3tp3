@@ -35,7 +35,7 @@ public class VentanaPrincipal extends JFrame {
         pestañas.addTab("Personas", panelPersonas);
         pestañas.addTab("Incompatibilidades", panelIncompatibilidades);
         pestañas.addTab("Requerimientos", panelRequerimientos);
-        //pestañas.addTab("Resultado", panelResultado);
+        pestañas.addTab("Resultado", panelResultado);
         pestañas.addChangeListener(e -> {
             panelIncompatibilidades.actualizarCombos();
         });
