@@ -23,9 +23,7 @@ public class BacktrackingTest {
         requerimiento = new Requerimiento(1, 1, 1, 1);
     }
 
-    // ════════════════════════════════════════════════════════════════════════
-    // Tests originales de Backtracking
-    // ════════════════════════════════════════════════════════════════════════
+
 
     @Test
     public void testEncuentraEquipoValido() {
@@ -186,14 +184,7 @@ public class BacktrackingTest {
                    "El tiempo no puede ser negativo");
     }
 
-    // ════════════════════════════════════════════════════════════════════════
-    // Tests de comparación: Backtracking vs Heurística
-    // ════════════════════════════════════════════════════════════════════════
 
-    /**
-     * Verifica que ambos algoritmos encuentren una solución válida
-     * en el caso base (sin incompatibilidades).
-     */
     @Test
     public void testComparacion_AmbosTienenSolucion() {
         Backtracking bt = new Backtracking(gestor, requerimiento);
@@ -206,11 +197,7 @@ public class BacktrackingTest {
         assertNotNull(equipoH,  "Heurística debe encontrar solución");
     }
 
-    /**
-     * Verifica que backtracking encuentra la solución ÓPTIMA (máxima calificación).
-     * En este escenario sin incompatibilidades la calificación óptima es 5+4+3+4 = 16.
-     * La heurística también llega al óptimo porque no hay restricciones que la desvíen.
-     */
+   
     @Test
     public void testComparacion_BacktrackingEsOptimo() {
         Backtracking bt = new Backtracking(gestor, requerimiento);
@@ -242,13 +229,7 @@ public class BacktrackingTest {
         );
     }
 
-    /**
-     * Caso donde la heurística puede quedar subóptima:
-     * el candidato de mayor calificación en un rol es incompatible con el
-     * de mayor calificación en otro rol; la heurística greedy elige el primero
-     * y se ve obligada a tomar el segundo peor en el otro rol.
-     * Backtracking siempre encuentra la combinación globalmente óptima.
-     */
+
     @Test
     public void testComparacion_BacktrackingMejorEnCasoConflicto() {
         GestorDePersonas g = new GestorDePersonas();
@@ -282,9 +263,6 @@ public class BacktrackingTest {
         assertNotNull(equipoBT);
         assertNotNull(equipoH);
 
-        // La heurística elige Lider1 (10) → queda bloqueada con Prog1 → toma Prog2 (5) → total 10+4+5+4 = 23
-        // Backtracking descubre que Lider2 (6) + Prog1 (9) → total 6+4+9+4 = 23 (misma en este caso)
-        // O en otro diseño, BT siempre será >= H
         assertTrue(
             equipoBT.getCalificacionTotal() >= equipoH.getCalificacionTotal(),
             "En caso de conflicto, Backtracking debe ser igual o mejor que la Heurística"
@@ -297,7 +275,6 @@ public class BacktrackingTest {
      */
     @Test
     public void testComparacion_HeuristicaMasEficiente() {
-        // Aumentamos el pool de candidatos para que la diferencia sea notoria
         GestorDePersonas g = new GestorDePersonas();
         String[] nombres = {"A","B","C","D","E","F","G","H","I","J","K","L"};
         Rol[]    roles   = {Rol.LIDER_DE_PROYECTO, Rol.ARQUITECTO,
@@ -329,9 +306,7 @@ public class BacktrackingTest {
         );
     }
 
-    /**
-     * Ambos algoritmos deben retornar null ante la misma entrada sin solución.
-     */
+ 
     @Test
     public void testComparacion_AmbosSinSolucion() {
         GestorDePersonas gestorImposible = new GestorDePersonas();
